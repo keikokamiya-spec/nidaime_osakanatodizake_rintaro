@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>二代目 お魚と地酒 凛太郎</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #231b16;
+      --muted: #74675d;
+      --paper: #fbf7ef;
+      --line: #ded3c4;
+      --wood: #8f4d25;
+      --accent: #b53d2b;
+      --deep: #172626;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding-bottom: 92px;
+      font-family: "Hiragino Mincho ProN", "Yu Mincho", YuMincho, serif;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.8;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .site-header {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px clamp(18px, 4vw, 56px);
+      color: #fff;
+      background: linear-gradient(180deg, rgba(0, 0, 0, .62), rgba(0, 0, 0, 0));
+    }
+
+    .brand {
+      font-size: clamp(18px, 2vw, 26px);
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-shadow: 0 2px 16px rgba(0, 0, 0, .35);
+    }
+
+    .nav {
+      display: flex;
+      gap: 22px;
+      font-family: system-ui, sans-serif;
+      font-size: 13px;
+      letter-spacing: .08em;
+    }
+
+    .hero {
+      min-height: 92svh;
+      display: grid;
+      align-items: end;
+      position: relative;
+      padding: 120px clamp(20px, 7vw, 96px) 72px;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+    }
+
+    .hero::before {
+      background: url("images/スクリーンショット 2026-05-15 132453.png") center / cover;
+      transform: scale(1.02);
+    }
+
+    .hero::after {
+      background:
+        linear-gradient(90deg, rgba(0, 0, 0, .74), rgba(0, 0, 0, .22) 55%, rgba(0, 0, 0, .1)),
+        linear-gradient(0deg, rgba(0, 0, 0, .72), rgba(0, 0, 0, 0) 42%);
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 780px;
+    }
+
+    .eyebrow {
+      margin: 0 0 14px;
+      font-family: system-ui, sans-serif;
+      font-size: 13px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      opacity: .86;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(42px, 8vw, 92px);
+      line-height: 1.08;
+      letter-spacing: .03em;
+      text-wrap: balance;
+    }
+
+    .hero-title span {
+      display: block;
+    }
+
+    .lead {
+      max-width: 620px;
+      margin: 24px 0 0;
+      font-size: clamp(17px, 2.2vw, 24px);
+      text-shadow: 0 2px 20px rgba(0, 0, 0, .4);
+    }
+
+    .section {
+      padding: clamp(56px, 8vw, 104px) clamp(20px, 7vw, 96px);
+    }
+
+    .intro {
+      display: grid;
+      grid-template-columns: minmax(0, .9fr) minmax(280px, 1.1fr);
+      gap: clamp(28px, 6vw, 76px);
+      align-items: center;
+      background: #fffaf2;
+    }
+
+    .section-title {
+      margin: 0 0 18px;
+      font-size: clamp(28px, 4vw, 48px);
+      line-height: 1.25;
+      letter-spacing: .05em;
+    }
+
+    .copy {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .menu-band {
+      color: #fff;
+      background: var(--deep);
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1px;
+      margin-top: 34px;
+      border: 1px solid rgba(255, 255, 255, .18);
+      background: rgba(255, 255, 255, .18);
+    }
+
+    .menu-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      margin-top: 28px;
+      padding: 12px 24px;
+      border: 1px solid rgba(255, 255, 255, .42);
+      color: #fff;
+      background: rgba(255, 255, 255, .08);
+      font-family: system-ui, sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: .08em;
+    }
+
+    .menu-link:hover {
+      border-color: #fff;
+      background: rgba(255, 255, 255, .16);
+    }
+
+    .menu-item {
+      min-height: 220px;
+      padding: 26px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      overflow: hidden;
+      background-image:
+        linear-gradient(180deg, rgba(23, 38, 38, .46), rgba(23, 38, 38, .9)),
+        var(--menu-image);
+      background-position: center;
+      background-size: cover;
+    }
+
+    .menu-tuna {
+      --menu-image: url("images/スクリーンショット 2026-05-15 132839.png");
+    }
+
+    .menu-chicken {
+      --menu-image: url("images/スクリーンショット 2026-05-15 132638.png");
+    }
+
+    .menu-sake {
+      --menu-image: url("images/スクリーンショット 2026-05-15 132652.png");
+    }
+
+    .menu-item h3 {
+      margin: 0 0 10px;
+      font-size: 22px;
+      letter-spacing: .05em;
+    }
+
+    .menu-item p {
+      margin: 0;
+      color: rgba(255, 255, 255, .72);
+      font-size: 15px;
+    }
+
+    .gallery {
+      background: #fffaf2;
+    }
+
+    .gallery-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 30px;
+    }
+
+    .gallery-head .copy {
+      max-width: 420px;
+    }
+
+    .gallery-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      margin-top: 22px;
+      padding: 12px 24px;
+      border: 1px solid var(--line);
+      color: var(--ink);
+      background: #fffaf2;
+      font-family: system-ui, sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: .08em;
+    }
+
+    .gallery-link:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .carousel {
+      display: grid;
+      gap: 16px;
+    }
+
+    .carousel-viewport {
+      overflow: hidden;
+      border: 1px solid rgba(35, 27, 22, .1);
+      background: #eadfcf;
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform .45s ease;
+    }
+
+    .carousel-slide {
+      min-width: 100%;
+      aspect-ratio: 16 / 10;
+      margin: 0;
+      background: #eadfcf;
+    }
+
+    .carousel-slide img {
+      object-fit: contain;
+    }
+
+    .intro-carousel .carousel-slide {
+      aspect-ratio: 4 / 3;
+    }
+
+    .intro-carousel .carousel-slide img {
+      object-fit: cover;
+    }
+
+    .carousel-controls {
+      display: grid;
+      grid-template-columns: 48px 1fr 48px;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .carousel-button {
+      width: 48px;
+      height: 48px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      color: var(--ink);
+      background: #fffaf2;
+      font-size: 28px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .carousel-button:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .carousel-count {
+      margin: 0;
+      text-align: center;
+      font-family: system-ui, sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: .08em;
+    }
+
+    .info {
+      display: grid;
+      grid-template-columns: minmax(260px, .9fr) minmax(0, 1.1fr);
+      gap: clamp(28px, 6vw, 76px);
+      align-items: start;
+      background: #f1e7d9;
+    }
+
+    .info-content {
+      display: grid;
+      gap: 24px;
+    }
+
+    .map {
+      min-height: 520px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: #dfd3c3;
+    }
+
+    .map iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: 520px;
+      border: 0;
+    }
+
+    .info-list {
+      display: grid;
+      gap: 14px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-family: system-ui, sans-serif;
+    }
+
+    .info-list li {
+      display: grid;
+      grid-template-columns: 88px 1fr;
+      gap: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .label {
+      color: var(--accent);
+      font-weight: 700;
+      letter-spacing: .08em;
+    }
+
+    .footer {
+      padding: 26px clamp(20px, 7vw, 96px);
+      color: #fff;
+      background: #1b1512;
+      font-family: system-ui, sans-serif;
+      font-size: 13px;
+    }
+
+    .fixed-actions {
+      position: fixed;
+      inset: auto 0 0;
+      z-index: 20;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px clamp(16px, 4vw, 40px) calc(12px + env(safe-area-inset-bottom));
+      background: rgba(251, 247, 239, .94);
+      border-top: 1px solid var(--line);
+      box-shadow: 0 -10px 30px rgba(35, 27, 22, .12);
+      backdrop-filter: blur(12px);
+    }
+
+    .fixed-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: min(240px, calc(50vw - 22px));
+      min-height: 52px;
+      padding: 12px 18px;
+      border: 1px solid var(--accent);
+      font-family: system-ui, sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: .08em;
+    }
+
+    .fixed-action.phone {
+      color: var(--accent);
+      background: #fffaf2;
+    }
+
+    .fixed-action.reserve {
+      color: #fff;
+      background: var(--accent);
+    }
+
+    @media (max-width: 760px) {
+      .site-header {
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .nav {
+        gap: 12px;
+        font-size: 11px;
+      }
+
+      .intro,
+      .info {
+        grid-template-columns: 1fr;
+      }
+
+      .gallery-head,
+      .menu-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .gallery-head {
+        display: grid;
+      }
+
+      .carousel-slide {
+        aspect-ratio: 4 / 3;
+      }
+
+      .carousel-controls {
+        grid-template-columns: 42px 1fr 42px;
+      }
+
+      .carousel-button {
+        width: 42px;
+        height: 42px;
+        font-size: 24px;
+      }
+
+      .map,
+      .map iframe {
+        min-height: 320px;
+      }
+
+      .info-list li {
+        grid-template-columns: 1fr;
+        gap: 4px;
+      }
+
+      .fixed-actions {
+        gap: 8px;
+        padding-inline: 10px;
+      }
+
+      .fixed-action {
+        min-height: 50px;
+        padding-inline: 10px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#">凛太郎</a>
+    <nav class="nav" aria-label="ページ内ナビゲーション">
+      <a href="#about">こだわり</a>
+      <a href="#menu">お品書き</a>
+      <a href="#gallery">写真</a>
+      <a href="#info">店舗情報</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" aria-label="二代目 お魚と地酒 凛太郎">
+      <div class="hero-inner">
+        <p class="eyebrow">Osakana to Jizake</p>
+        <h1 class="hero-title"><span>二代目</span><span>お魚と地酒</span><span>凛太郎</span></h1>
+        <p class="lead">旬の魚と地酒を、肩ひじ張らずにゆっくり味わう。木の温もりに包まれた、大人のための一軒です。</p>
+      </div>
+    </section>
+
+    <section id="about" class="section intro">
+      <div>
+        <h2 class="section-title">その日に旨い魚を、いちばん旨いかたちで。</h2>
+        <p class="copy">市場から届く魚介を中心に、刺身、焼き物、煮付け、酒肴まで丁寧に仕立てます。料理に合わせる地酒は、香り、余韻、季節感を大切に選びました。</p>
+      </div>
+      <div class="carousel intro-carousel" aria-label="店内と料理の写真">
+        <div class="carousel-viewport">
+          <div class="carousel-track">
+            <figure class="carousel-slide"><img src="images/スクリーンショット 2026-05-15 132615.png" alt="店内の雰囲気"></figure>
+            <figure class="carousel-slide"><img src="images/スクリーンショット 2026-05-15 132629.png" alt="料理写真"></figure>
+            <figure class="carousel-slide"><img src="images/スクリーンショット 2026-05-15 132749.png" alt="魚料理"></figure>
+          </div>
+        </div>
+        <div class="carousel-controls">
+          <button class="carousel-button" type="button" data-carousel-prev aria-label="前の写真">‹</button>
+          <p class="carousel-count" aria-live="polite"><span data-carousel-current>1</span> / <span data-carousel-total>3</span></p>
+          <button class="carousel-button" type="button" data-carousel-next aria-label="次の写真">›</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="menu" class="section menu-band">
+      <p class="eyebrow">Menu</p>
+      <h2 class="section-title">おすすめ</h2>
+      <div class="menu-grid">
+        <article class="menu-item menu-tuna">
+          <h3>お魚（マグロ）</h3>
+          <p>鮮度のよいマグロを中心に、その日の旨い魚を丁寧に仕立てます。</p>
+        </article>
+        <article class="menu-item menu-chicken">
+          <h3>熊本の地鶏</h3>
+          <p>噛むほどに旨みが広がる熊本の地鶏を、酒肴として楽しめる一皿に。</p>
+        </article>
+        <article class="menu-item menu-sake">
+          <h3>日本酒</h3>
+          <p>料理に寄り添う銘柄を、冷酒から燗酒まで幅広く揃えています。</p>
+        </article>
+      </div>
+      <a class="menu-link" href="https://tabelog.com/osaka/A2706/A270604/27155397/" target="_blank" rel="noopener">詳細はこちら</a>
+    </section>
+
+    <section id="gallery" class="section gallery">
+      <div class="gallery-head">
+        <div>
+          <p class="eyebrow">Gallery</p>
+          <h2 class="section-title">店の空気まで<br>伝わる写真。</h2>
+        </div>
+        <p class="copy">入口、席、料理、地酒の写真をまとめて掲載しています。</p>
+      </div>
+      <div class="carousel" aria-label="店舗写真ギャラリー">
+        <div class="carousel-viewport">
+          <div class="carousel-track">
+                                                                                                                                                                   
+            <figure class="carousel-slide"><img loading="lazy" src="images/スクリーンショット 2026-05-15 132501.png" alt="店舗写真 2"></figure>
+            <figure class="carousel-slide"><img loading="lazy" src="images/スクリーンショット 2026-05-15 132509.png" alt="店舗写真 3"></figure>
+            <figure class="carousel-slide"><img loading="lazy" src="images/スクリーンショット 2026-05-15 132518.png" alt="店舗写真 4"></figure>
+            <figure class="carousel-slide"><img loading="lazy" src="images/スクリーンショット 2026-05-15 132526.png" alt="店舗写真 5"></figure>
+            <figure class="carousel-slide"><img loading="lazy" src="images/スクリーンショット 2026-05-15 132533.png" alt="店舗写真 6"></figure>
+            <figure class="carousel-slide"><img loading="lazy" src="images/スクリーンショット 2026-05-15 132543.png" alt="店舗写真 7"></figure>
+            <figure class="carousel-slide"><img loading="lazy" src="images/スクリーンショット 2026-05-15 132550.png" alt="店舗写真 8"></figure>
+            <figure class="carousel-slide"><img loading="lazy" src="images/スクリーンショット 2026-05-15 132558.png" alt="店舗写真 9"></figure>
+            <figure class="carousel-slide"><img loading="lazy" src="images/スクリーンショット 2026-05-15 132607.png" alt="店舗写真 10"></figure>
+                                                                                                                                                             
+                                                                                                                                                             
+                                                                                                                                                             
+            <figure class="carousel-slide"><img loading="lazy" src="images/スクリーンショット 2026-05-15 132644.png" alt="店舗写真 14"></figure>
+                                                                                                                                                             
+            <figure class="carousel-slide"><img loading="lazy" src="images/スクリーンショット 2026-05-15 132708.png" alt="店舗写真 16"></figure>
+            <figure class="carousel-slide"><img loading="lazy" src="images/スクリーンショット 2026-05-15 132716.png" alt="店舗写真 17"></figure>
+            <figure class="carousel-slide"><img loading="lazy" src="images/スクリーンショット 2026-05-15 132732.png" alt="店舗写真 18"></figure>
+            <figure class="carousel-slide"><img loading="lazy" src="images/スクリーンショット 2026-05-15 132741.png" alt="店舗写真 19"></figure>
+                                                                                                                                                             
+            <figure class="carousel-slide"><img loading="lazy" src="images/スクリーンショット 2026-05-15 132807.png" alt="店舗写真 21"></figure>
+            <figure class="carousel-slide"><img loading="lazy" src="images/スクリーンショット 2026-05-15 132816.png" alt="店舗写真 22"></figure>
+            <figure class="carousel-slide"><img loading="lazy" src="images/スクリーンショット 2026-05-15 132824.png" alt="店舗写真 23"></figure>
+            <figure class="carousel-slide"><img loading="lazy" src="images/スクリーンショット 2026-05-15 132830.png" alt="店舗写真 24"></figure>
+                                                                                                                                                             
+            <figure class="carousel-slide"><img loading="lazy" src="images/スクリーンショット 2026-05-15 132850.png" alt="店舗写真 26"></figure>
+          </div>
+        </div>
+        <div class="carousel-controls">
+          <button class="carousel-button" type="button" data-carousel-prev aria-label="前の写真">‹</button>
+          <p class="carousel-count" aria-live="polite"><span data-carousel-current>1</span> / <span data-carousel-total>19</span></p>
+          <button class="carousel-button" type="button" data-carousel-next aria-label="次の写真">›</button>
+        </div>
+      </div>
+      <a class="gallery-link" href="https://www.instagram.com/tktk_rintarou/" target="_blank" rel="noopener">詳細は Instagram</a>
+    </section>
+
+    <section id="info" class="section info">
+      <div class="info-content">
+        <h2 class="section-title">店舗情報</h2>
+        <p class="copy">ご予約は食べログもしくはお電話でお願いたします。</p>
+        <ul class="info-list">
+          <li><span class="label">店名</span><span>二代目 お魚と地酒 凛太郎</span></li>
+          <li><span class="label">住所</span><span>〒569-0071 大阪府高槻市城北町２丁目４−１５ MOビル B1F</span></li>
+          <li><span class="label">アクセス</span><span>阪急高槻市駅より徒歩1分<br>JR高槻駅より徒歩5分</span></li>
+          <li><span class="label">電話</span><span>072-600-2077</span></li>
+          <li><span class="label">営業時間</span><span>17:00 - 23:00</span></li>
+          <li><span class="label">定休日</span><span>月曜日</span></li>
+          <li><span class="label">席</span><span>カウンター、テーブル席</span></li>
+        </ul>
+      </div>
+      <div class="map" aria-label="Googleマップ">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3274.2674171368576!2d135.6235251!3d34.84950739999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60010300620891f1%3A0x46badd267700ca09!2z5LqM5Luj55uu44GK44GV44GL44Gq44Go5Zyw6YWSIOWHm-WkqumDjg!5e0!3m2!1sja!2sjp!4v1780932013916!5m2!1sja!2sjp" width="600" height="450" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <small>&copy; 二代目 お魚と地酒 凛太郎</small>
+  </footer>
+  <div class="fixed-actions" aria-label="予約と問い合わせ">
+    <a class="fixed-action phone" href="tel:0726002077">電話する</a>
+    <a class="fixed-action reserve" href="https://tabelog.com/osaka/A2706/A270604/27155397/" target="_blank" rel="noopener">ネット予約</a>
+  </div>
+  <script>
+    document.querySelectorAll(".carousel").forEach((carousel) => {
+      const track = carousel.querySelector(".carousel-track");
+      const slides = Array.from(carousel.querySelectorAll(".carousel-slide"));
+      const current = carousel.querySelector("[data-carousel-current]");
+      const total = carousel.querySelector("[data-carousel-total]");
+      const prev = carousel.querySelector("[data-carousel-prev]");
+      const next = carousel.querySelector("[data-carousel-next]");
+      let activeIndex = 0;
+
+      total.textContent = slides.length;
+
+      function updateCarousel() {
+        track.style.transform = `translateX(-${activeIndex * 100}%)`;
+        current.textContent = activeIndex + 1;
+      }
+
+      prev.addEventListener("click", () => {
+        activeIndex = (activeIndex - 1 + slides.length) % slides.length;
+        updateCarousel();
+      });
+
+      next.addEventListener("click", () => {
+        activeIndex = (activeIndex + 1) % slides.length;
+        updateCarousel();
+      });
+
+      updateCarousel();
+    });
+  </script>
+</body>
+</html>
